@@ -271,8 +271,8 @@ Figures are stored in the `results/` folder.
 ```text
 two-body-orbit-simulation-matlab/
 │
-├── orbit_stage1.m
-├── orbit_stage2.m
+├── orbitalscript1.m
+├── orbitalscript2.m
 ├── two_body_ode.m
 ├── README.md
 ├── LICENSE
@@ -292,15 +292,15 @@ two-body-orbit-simulation-matlab/
 1. Download or clone the repository.
 2. Open MATLAB.
 3. Set the Current Folder to the project directory.
-4. Run `orbit_stage1.m`.
-5. Run `orbit_stage2.m`.
+4. Run `orbitalscript1.m`.
+5. Run `orbitalscript2.m`.
 6. Review the numerical results and generated figures.
 
 ### MATLAB Online
 
 1. Upload the project files to MATLAB Online.
 2. Open the project directory.
-3. Run `orbit_stage1.m` or `orbit_stage2.m`.
+3. Run `orbitalscript1.m` or `orbitalscript2.m`.
 4. Review the generated tables and figures.
 
 No additional MATLAB toolboxes are required.
