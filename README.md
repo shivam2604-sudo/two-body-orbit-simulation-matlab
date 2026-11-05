@@ -1,59 +1,93 @@
-# Two-Body Orbit Simulation in MATLAB
 
-Analytical orbit characterization and numerical simulation of Low Earth Orbit (LEO) and Geostationary Earth Orbit (GEO) satellites using the two-body orbital dynamics model.
+# Two-Body Orbital Dynamics Simulation in MATLAB
 
-## 1. Project Overview
+## Analytical Characterization and Numerical Propagation of LEO and GEO Satellites
 
-This project investigates satellite motion around Earth using MATLAB.
+A MATLAB project that characterizes circular Earth orbits analytically and propagates satellite motion numerically.
 
-The project is developed in three stages:
+The project compares a hand-written explicit Euler integrator with MATLAB's adaptive `ode45` solver and evaluates numerical accuracy using orbital radius and specific mechanical energy.
 
-- **Stage 1:** Analytical orbit characterization.
-- **Stage 2:** Numerical propagation of the two-body equations of motion.
-- **Stage 3:** Comparison of numerical and analytical results.
+**Project status:** Stage 1 and Stage 2 complete. Stage 3 and Stage 4 are planned extensions.
 
-The initial model considers a simplified two-body system in which the satellite is affected only by Earth's gravitational attraction.
+---
 
-## 2. Model Assumptions
+## 1. Project Objective
 
-The initial orbital model assumes:
+The objective of this project is to understand how orbital mechanics equations translate into MATLAB simulations and how numerical integration methods affect orbit prediction.
 
-- Earth is spherical.
+The project investigates:
+
+- Analytical orbital speed and period.
+- Numerical propagation of satellite trajectories.
+- Comparison of Euler and `ode45`.
+- Numerical error and energy conservation.
+
+---
+
+## 2. Model and Assumptions
+
+The initial model uses the classical two-body approximation.
+
+- Earth is represented as a spherical body.
 - The satellite is treated as a point mass.
 - Only Earth's gravitational attraction is considered.
+- The initial orbit is circular and planar.
 - Atmospheric drag is neglected.
 - Earth's oblateness is neglected.
-- Third-body gravitational effects are neglected.
-- Initial calculations consider circular orbits.
+- Solar radiation pressure and third-body effects are neglected.
 
-These assumptions make the project suitable for understanding MATLAB programming and the fundamentals of orbital mechanics.
+These assumptions provide a simple model for understanding orbital mechanics and numerical integration.
 
-## 3. Stage 1: Analytical Orbit Characterization
+---
 
-Stage 1 calculates the theoretical circular orbital speed, orbital period and number of orbits per sidereal day for selected LEO and GEO altitudes.
+## 3. Project Stages
 
-### 3.1 Orbit Altitudes
+### Stage 1 — Analytical Orbit Characterization
 
-The following orbital altitudes are considered:
+- Calculate circular orbital speed.
+- Calculate orbital period.
+- Calculate orbits per sidereal day.
+- Validate the GEO orbital period.
 
-| Orbit Category | Altitude |
-|---|---|
-| LEO | 400 km |
-| LEO | 500 km |
-| LEO | 600 km |
-| LEO | 900 km |
-| LEO | 1000 km |
-| GEO | 35,786 km |
+### Stage 2 — Numerical Orbit Propagation
 
-### 3.2 Governing Equations
+- Implement explicit Euler integration.
+- Implement MATLAB's adaptive `ode45` solver.
+- Compare numerical trajectories.
+- Investigate radius and energy errors.
+- Perform a time-step study.
 
-The orbital radius is measured from Earth's centre:
+### Stage 3 — Three-Dimensional Orbit and Ground Track
+
+Planned extensions:
+
+- Three-dimensional position and velocity.
+- Orbital inclination.
+- Earth rotation.
+- Latitude and longitude ground tracks.
+
+### Stage 4 — Perturbations and Coverage Analysis
+
+Planned extensions:
+
+- J2 perturbation.
+- Sun-synchronous orbit inclination.
+- Satellite swath and coverage.
+- Revisit-time estimates.
+
+---
+
+## 4. Governing Equations
+
+### 4.1 Circular-Orbit Properties
+
+Orbital radius:
 
 \[
 r = R_E + h
 \]
 
-Circular orbital velocity:
+Circular orbital speed:
 
 \[
 v = \sqrt{\frac{\mu}{r}}
@@ -65,155 +99,230 @@ Orbital period:
 T = 2\pi\sqrt{\frac{r^3}{\mu}}
 \]
 
-Number of orbits per sidereal day:
+Orbits per sidereal day:
 
 \[
 N = \frac{T_{sidereal}}{T}
 \]
 
-### 3.3 Constants Used
+### 4.2 Two-Body Equations of Motion
 
-- Earth's equatorial radius:
-  \(R_E = 6378.137\ km\)
-- Earth's gravitational parameter:
-  \(\mu = 3.986004418 \times 10^{14}\ m^3/s^2\)
-- Sidereal day:
-  \(T_{sidereal} = 23h\ 56m\ 4s\)
+The two-dimensional state vector is:
+
+\[
+\mathbf{y} = [x,\ y,\ v_x,\ v_y]^T
+\]
+
+The acceleration is:
+
+\[
+\ddot{\mathbf{r}} = -\frac{\mu}{r^3}\mathbf{r}
+\]
+
+where:
+
+\[
+r = \sqrt{x^2+y^2}
+\]
+
+The first-order equations are:
+
+\[
+\frac{d}{dt}
+\begin{bmatrix}
+x\\
+y\\
+v_x\\
+v_y
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_x\\
+v_y\\
+-\mu x/r^3\\
+-\mu y/r^3
+\end{bmatrix}
+\]
+
+### 4.3 Specific Mechanical Energy
+
+Specific orbital energy:
+
+\[
+\varepsilon =
+\frac{1}{2}(v_x^2+v_y^2)-\frac{\mu}{r}
+\]
+
+For an ideal two-body orbit, specific mechanical energy should remain constant.
+
+---
+
+## 5. Constants and Units
 
 All calculations use SI units internally.
 
+| Quantity | Symbol | Value |
+|---|---|---|
+| Earth's equatorial radius | \(R_E\) | 6378.137 km |
+| Earth's gravitational parameter | \(\mu\) | \(3.986004418\times10^{14}\) m³/s² |
+| Sidereal day | \(T_{sidereal}\) | 23 h 56 min 4 s |
+
 Results are displayed in:
+
 - Kilometres (km)
 - Kilometres per second (km/s)
 - Minutes (min)
 - Orbits per sidereal day
 
-### 3.4 GEO Validation
+---
 
-The calculated GEO orbital period is compared with one sidereal day.
+## 6. Analytical Results
 
-- Reference period: approximately 1436 minutes.
-- Calculated GEO orbital period is checked against this reference.
-- Percentage error is calculated and displayed.
+The analytical model was evaluated for representative circular-orbit altitudes.
 
-## 4. Current Implementation
+| Altitude (km) | Speed (km/s) | Period (min) | Orbits per sidereal day |
+|---|---|---|---|
+| 400 | 7.669 | 92.56 | 15.565 |
+| 500 | 7.613 | 94.62 | 15.226 |
+| 600 | 7.558 | 96.69 | 14.899 |
+| 900 | 7.400 | 102.99 | 13.981 |
+| 1000 | 7.350 | 105.12 | 13.703 |
+| 35,786 (GEO) | 3.075 | 1436.07 | 1.000 |
 
-The current MATLAB script, `orbitalscript1.m`, performs the following tasks:
+### GEO Validation
 
-- Defines Earth and orbital constants.
-- Calculates orbital radius for selected altitudes.
-- Calculates circular orbital velocity.
-- Calculates orbital period.
-- Calculates the number of orbits per sidereal day.
-- Displays numerical results in a MATLAB table.
-- Validates the GEO orbital period against the sidereal day.
-- Generates LEO orbital speed and period plots.
-- Generates GEO-inclusive comparison plots.
+- Calculated GEO period: approximately 1436.07 minutes.
+- Reference sidereal day: approximately 1436.07 minutes.
+- Reported percentage difference: approximately \(1.1\times10^{-5}\%\).
 
-## 5. Project Outputs
+---
 
-The MATLAB script generates:
+## 7. Numerical Propagation
 
-- A numerical results table containing:
-  - Orbit type
-  - Altitude
-  - Orbital speed
-  - Orbital period
-  - Orbits per sidereal day
+The numerical experiment propagates a 500 km circular orbit for approximately one orbital period.
 
-- LEO orbital speed versus altitude plot.
-- LEO orbital period versus altitude plot.
-- GEO-inclusive orbital speed comparison plot.
-- GEO-inclusive orbital period comparison plot.
-- GEO validation results and percentage error in the MATLAB Command Window.
+### 7.1 Explicit Euler Method
 
-## 6. Expected Observations
+- Uses a fixed time step.
+- Updates position and velocity using the current state.
+- Introduces artificial energy gain.
+- Causes the simulated orbit to spiral outward.
 
-The results should demonstrate that:
+### 7.2 MATLAB ode45 Solver
 
-- Circular orbital speed decreases as altitude increases.
-- Orbital period increases as altitude increases.
-- LEO satellites complete several orbits during one sidereal day.
-- A GEO satellite has an orbital period close to one sidereal day.
-- GEO validation error is small when the stated constants and altitude are used.
+- Uses an adaptive Runge–Kutta method.
+- Adjusts the time step based on estimated numerical error.
+- Provides more accurate orbital propagation for the selected tolerances.
 
-## 7. How to Run
+Simulation settings:
+
+- Relative tolerance: `1e-9`
+- Absolute tolerance: `1e-6`
+
+---
+
+## 8. Numerical Comparison
+
+| Method | Configuration | Radius change after one orbit |
+|---|---|---|
+| Explicit Euler | dt = 10 s | 920.0 km |
+| Adaptive ode45 | RelTol = 1e-9, AbsTol = 1e-6 | 0.000004 km (about 4 mm) |
+
+The comparison demonstrates that a trajectory can appear visually plausible while still accumulating significant numerical error.
+
+---
+
+## 9. Euler Time-Step Study
+
+| Time step (s) | Radius growth (km) | Energy change (%) |
+|---|---|---|
+| 60 | 5200.4 | 35.99 |
+| 10 | 920.0 | 10.96 |
+| 1 | 95.1 | 1.35 |
+
+### Key Findings
+
+- Euler's error decreases as the time step becomes smaller.
+- The Euler method introduces artificial energy gain.
+- The satellite spirals outward instead of maintaining a circular orbit.
+- `ode45` maintains the expected orbit much more accurately.
+- Specific mechanical energy is a useful diagnostic for numerical accuracy.
+
+---
+
+## 10. Project Outputs
+
+The MATLAB scripts generate:
+
+- Analytical LEO and GEO comparison tables.
+- Orbital speed and period plots.
+- Euler orbital trajectory.
+- Numerical energy-drift plot.
+- Euler versus `ode45` trajectory comparison.
+- Euler time-step study.
+- GEO validation results.
+
+Figures are stored in the `results/` folder.
+
+---
+
+## 11. MATLAB Project Structure
+
+```text
+two-body-orbit-simulation-matlab/
+│
+├── orbit_stage1.m
+├── orbit_stage2.m
+├── two_body_ode.m
+├── README.md
+├── LICENSE
+│
+└── results/
+    ├── stage2_euler_orbit.png
+    ├── stage2_energy_drift.png
+    └── stage2_euler_vs_ode45.png
+```
+
+---
+
+## 12. How to Run
 
 ### MATLAB Desktop
 
-1. Download or clone this repository.
+1. Download or clone the repository.
 2. Open MATLAB.
 3. Set the Current Folder to the project directory.
-4. Open `orbitalscript1.m`.
-5. Click **Run**.
-6. Review the numerical table, Command Window output and generated figures.
+4. Run `orbit_stage1.m`.
+5. Run `orbit_stage2.m`.
+6. Review the numerical results and generated figures.
 
 ### MATLAB Online
 
-1. Upload `orbitalscript1.m` to MATLAB Online.
-2. Open the script.
-3. Click **Run**.
-4. Review the generated results and figures.
+1. Upload the project files to MATLAB Online.
+2. Open the project directory.
+3. Run `orbit_stage1.m` or `orbit_stage2.m`.
+4. Review the generated tables and figures.
 
-No external data files are required for Stage 1.
+No additional MATLAB toolboxes are required.
 
-## 8. Project Roadmap
+---
 
-### Completed
+## 13. Limitations and Future Work
 
-- [x] Define the two-body orbital model.
-- [x] Calculate analytical circular orbital speed.
-- [x] Calculate analytical orbital period.
-- [x] Calculate the number of orbits per sidereal day.
-- [x] Validate the GEO orbital period.
-- [x] Generate LEO and GEO comparison plots.
-
-### Planned
-
-- [ ] Implement the two-body equations of motion.
-- [ ] Use MATLAB `ode45` for numerical orbit propagation.
-- [ ] Plot two-dimensional LEO and GEO trajectories.
-- [ ] Simulate elliptical orbits by changing initial velocity.
-- [ ] Calculate numerical orbital periods from propagated trajectories.
-- [ ] Compare numerical and analytical orbital periods.
-- [ ] Compare numerical and analytical orbital speeds.
-- [ ] Investigate numerical conservation of energy and angular momentum.
-
-## 9. Project Limitations
-
-This project currently uses an educational two-body orbital model.
-
-The initial model does not include:
+The current model does not include:
 
 - Atmospheric drag.
 - Earth's non-spherical gravity field.
 - Solar radiation pressure.
 - Third-body gravitational effects.
-- Launch injection errors.
 - Real satellite tracking data.
 
-These effects may be considered in future improvements.
+Future improvements will include three-dimensional inclined orbits, ground-track analysis, J2 perturbation, and satellite coverage studies.
 
-## 10. Project Structure
+---
 
-```text
-two-body-orbit-simulation-matlab/
-│
-├── orbitalscript1.m
-├── README.md
-├── LICENSE
-│
-└── results/
-    ├── results_table.png
-    ├── leo_plots.png
-    └── geo_plots.png
-```
+## 14. License
 
-The `results/` folder is optional and can be used to store exported figures and tables.
-
-## 11. License
-
-This project is licensed under the MIT License.
+This project is released under the MIT License.
 
 See the `LICENSE` file for details.
-
